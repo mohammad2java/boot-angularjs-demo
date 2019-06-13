@@ -17,6 +17,8 @@ AngularJS-1.7.8(1.x)
 	 default (ng) services list-https://docs.angularjs.org/api/ng/service
 	$scope,$log,$filter,$http,$controller etc..
 
+	$scope is prototype object/service henece most of services are singleton like $log,$http and so on.
+
 
 Module or app
 -------------------
@@ -101,19 +103,56 @@ how to create service and add service
 		}
 		);
 	
+    'return factory' is mandatory in case of used factory method to add service.	
+
+using service method of module(verified..tested..)
+------------------------------------------
+
+	var helloModule = angular.module("helloModule",[]);
+	var myservice = function() {
+		this.hello = function() {
+		console.log('sayHello is calling..');	
+		}
+	}
+	//adding myservice to module
+	helloModule.service("helloservice",myservice);
+
+	//added into controllers.
+	var myApp = angular.module('myApp',['helloModule']);
+	myApp.controller('myController',function($scope,$log,$http,helloservice){
+				helloservice.hello();		
+	});
+		
+
+how to include javascript/jquery code into angularjs scope
+----------------------------------------------------------	
+	$scope.$apply(function() {
+	//write javascript/or jquery code.
+	}
+	);
+	
+	this function will tell angularjs to update dom and run digest cycle.
 	
 	
---------------------
+	
+Note: (wachers and digest cycle)
+---------------------------
+	There few directive who attached with watcher along with field..
+	like {{}},ng-if,ng-show,ng-hide which called two times on loading page .	
+
+--------------------------------------------------------
 List of directive and used
 -----------------------------
-ng-app
-ng-init
-ng-controller
-ng-model
-ng-if
-ng-show
-ng-hide
-ng-class
-ng-repeat
+	{{}}  --to display value on page.
+	ng-app  --to apply angular effect on page.
+	ng-init  -- to intial $scope model value.
+	ng-controller  ---to attched controller function for scope and event handling.
+	ng-model    ---to attach html element with scope variable called model.
+	ng-if		---true/false to render inside code of ng-if.
+	ng-show     ---true/false to render inside code of ng-show.
+	ng-hide		-----just opposite of ng-show.
+	ng-class  ----to add runtime class based on some condition true/false.  example:== 
+	<div 	ng-class="'class-name':condition/function()"> </div>
+	ng-repeat	--loop to repeat element based on list size.	
 
 	
