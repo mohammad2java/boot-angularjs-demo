@@ -103,7 +103,15 @@ how to create service and add service
 		}
 		);
 	
-    'return factory' is mandatory in case of used factory method to add service.	
+    -> 'return factory' is mandatory in case of used factory method to add service.	
+   
+	 -> if you are outofscope of mainApp object. then you can use angular object 
+	   to add service(basically this is use if you are make app module in different file from service object.)
+	   	
+	   	angular.module('mainApp').factory('MathService', MathServiceObject);
+	   
+    
+    
 
 using service method of module(verified..tested..)
 ------------------------------------------
@@ -153,6 +161,177 @@ List of directive and used
 	ng-hide		-----just opposite of ng-show.
 	ng-class  ----to add runtime class based on some condition true/false.  example:== 
 	<div 	ng-class="'class-name':condition/function()"> </div>
-	ng-repeat	--loop to repeat element based on list size.	
-
+	ng-repeat	--loop to repeat element based on list size.	  
+	example-- <div ng-repeat="stduent in students"></div>
 	
+	
+	
+Html Hashpath and Angular-single-page application --routing(using lower version-(1.3.0-beta.18) because found issue with 1.7.8 version.)
+----------------------------------------------------------------------------------------------------------------------------------------
+	url looks ---templates/app/view/index.html#bookmarkId
+	link tag 
+	<a href ="#bookmarkId">click here to go book mark page</a>	
+	bookmark point in page
+	<a name="bookmarkId">This is starting point of bookmark page</a>..	
+
+	This works like new url without page loading ..
+	
+	angular routing means --
+	using hash(bookmark) getting content of other page and append to current page.
+	1-first add <script src="https://code.angularjs.org/1.3.0-beta.18/angular-route.min.js"></script>
+	2- add module as dependency in app module.
+	 like var myApp = angular.module('myApp',['helloModule','ngRoute']);
+	3- config the route or bookmark using hash or routepath.
+	like
+		myApp.config(function($routeProvider){
+		$routeProvider
+		.when('/bookmarkId',{
+			templateUrl:'/templates/app/view/bookmark.html',
+			controller: 'nameofcontroller'  //[this is optional]
+		})
+		.otherwise({ redirectTo: '/' });
+		});
+	
+	4- appending page content of templateUrl into current page.
+			<div ng-view></div>
+	
+	
+	
+	note-->> you call bookmark-page using angularcode.
+			like $location.path('/caselist'); 
+			
+	
+angular-route dynamic path
+--------------------------------------
+	you can make dynamic bookmark-path or hash
+	like 
+	.when('/student/:stID', {
+	    	    templateUrl: 'views/stduentcontent.html',
+	       }); 
+	       
+	    :stID with be replace by value.
+	    
+	    
+		------angularjs end
+
+
+
+	--thymeleaf started from here--------------------------------------------------------------------
+
+Thymeleaf template engine framework concept
+=======================================================
+	This is just java template engine which expcet xHtml tag.
+	xHTML means html tags standard to xml(every tag must have ending tag also like xml)
+	-> it works based on tag attribute:(like angularjs directive)
+	->it support all html attribute + some extra from thymeleaf.
+
+Thymeleaf setup
+---------------------
+	in spring boot----just add thymeleaf dependency.
+	in html   --- just add xmlns =th:http://www.thymeleaf.org with root tag
+	example:
+	<html xmlns:th="https://www.thymeleaf.org/">
+
+
+
+important thymeleaf attribute and concept.
+------------------------------------------
+th:text
+th:utext
+th:each
+th:if
+th:switch
+th:<html-attribute>
+<html-attribute>  like href ,src,
+
+th:text explanation
+--------------------
+	there are 2 ways to replace the value of text
+	1- using #{}
+	th:text="#{thy_hello}">
+	thyleaf engine will check i18n properties file for key- 'thy_hello'
+	
+	2- using ${}
+	th:text="${thy_hello}">
+	thyleaf engine will check ModelMap object to find value for key- 'thy_hello'	    
+	
+
+th:utext explanation
+-----------------------
+	this is same as th:text explanation except 
+	if you want to add html code as text then this tag can be work.	      
+	
+String concatenation
+-------------------------
+	<p th:text="|#{thy_hello} string-concat ${thy_hello}|">	
+	 
+	 
+standard expression
+------------------------
+1-Simple expressions:
+--------------------------
+	
+	Variable Expressions: ${...}
+	Selection Variable Expressions: *{...}  /mostly use in html form.
+	Message Expressions: #{...}
+	Link URL Expressions: @{...}
+	
+2-Literals
+-----------------	
+	Text literals: 'one text', 'Another one!',…
+	Number literals: 0, 34, 3.0, 12.3,…
+	Boolean literals: true, false
+	Null literal: null
+	Literal tokens: one, sometext, main,…
+	
+3-Text operations:
+-----------------------
+	String concatenation: +
+	Literal substitutions: |The name is ${name}|
+	Arithmetic operations:
+	Binary operators: +, -, *, /, %
+	Minus sign (unary operator): -
+	Boolean operations:
+	Binary operators: and, or
+	Boolean negation (unary operator): !, not
+	
+4-Comparisons and equality:
+-------------------------
+	Comparators: >, <, >=, <= (gt, lt, ge, le)
+	Equality operators: ==, != (eq, ne)
+	
+5-Conditional operators:
+---------------------------------
+	If-then: (if) ? (then)
+	If-then-else: (if) ? (then) : (else)
+	Default: (value) ?: (defaultvalue)	 
+	example:
+<tr th:class="${row.even}? 'even' : 'odd'"></tr>
+<td th:text="${prod.inStock}? #{true} : #{false}">yes</td>	
+
+th:each
+------------
+	   <tr th:each="prod : ${prods}">
+        <td th:text="${prod.name}">Onions</td>
+        <td th:text="${prod.price}">2.41</td>
+        <td th:text="${prod.inStock}? #{true} : #{false}">yes</td>
+      </tr>
+  	
+  	
+th:if
+-----------
+	 th:if="${not #lists.isEmpty(prod.comments)}"
+	 th:if="${lists.isEmpty(prod.comments)}"
+
+th:switch
+----------
+	<div th:switch="${user.role}">
+	  <p th:case="'admin'">User is an administrator</p>
+	  <p th:case="#{roles.manager}">User is a manager</p>
+	</div>
+
+th:object
+------------------
+	 
+	   
+	   

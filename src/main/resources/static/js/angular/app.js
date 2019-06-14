@@ -1,7 +1,21 @@
-var myApp = angular.module('myApp',['helloModule']);
-myApp.controller('myController',function($scope,$log,$http,helloservice){
+var myApp = angular.module('myApp',['helloModule','ngRoute']);
+
+myApp.config(function($routeProvider){
+	$routeProvider
+	.when('/bookmarkId',{
+		templateUrl:'/templates/app/view/bookmark.html'
+		
+	})
+	.otherwise({ redirectTo: '/' });
+	
+});
+
+myApp.controller('myController',function($scope,$log,$http,helloservice,$location){
 	$scope.doColo='amir';
 	$scope.testHell='testhello'
+	//auto directing to /bookmarkId route path.
+	//$location.path("/bookmarkId")
+	$log.info($location.path());
 	//console.info($scope);
 	/*$http.get("http://dummy.restapiexample.com/api/v1/employees")
 	.then(function(result){
@@ -32,3 +46,4 @@ myApp.controller('myController',function($scope,$log,$http,helloservice){
 		console.info("watcher called.."+newValue+" "+oldValue);
 	});*/
 });
+

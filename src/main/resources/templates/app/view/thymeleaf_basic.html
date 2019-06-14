@@ -1,0 +1,21 @@
+<html xmlns:th="https://www.thymeleaf.org/">
+<body >
+<p th:text="#{thy_hello}"> static-welcome to thymeleaf..</p>
+
+<p th:text="|#{thy_hello} string-concat ${thy_hello}|"> string concatenation welcome to thymeleaf..</p>
+
+<ul th:each="name :${countries} ">
+<li th:text="${name}">country name</li>
+</ul>
+
+<form action="/thymeleafsave" method="post" th:object="${formdata}">
+UserName: <input type="text" name="username" th:field="*{username}" /><span  th:errors="*{username}">username-error</span><br/>
+Password: <input type="text" name="password" th:field="*{password}" /><span th:errors="*{password}">password-error</span><br/>
+Repeat Password: <input type="text" name="repeatpass" th:field="*{repeatpass}" /><span th:errors="*{repeatpass}">password-error</span><br/>
+
+<input type="submit" value="createUser" />
+</form>
+
+</body>
+
+</html>
