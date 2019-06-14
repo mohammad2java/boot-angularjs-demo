@@ -330,8 +330,21 @@ th:switch
 	  <p th:case="#{roles.manager}">User is a manager</p>
 	</div>
 
-th:object
-------------------
-	 
-	   
+th:object , th:field ,th:errors
+------------------------------
+	th:object-this use with formModel
+	th:field-this use with form field
+	th:errors - use for displaying validation error message.
+	
+	example:
+	
+	<form action="/thymeleafsave" method="post" th:object="${formdata}">
+	UserName: <input type="text" name="username" th:field="*{username}" /><span  th:errors="*{username}">username-error</span><br/>
+	Password: <input type="text" name="password" th:field="*{password}" /><span th:errors="*{password}">password-error</span><br/>
+	Repeat Password: <input type="text" name="repeatpass" th:field="*{repeatpass}" /><span th:errors="*{repeatpass}">password-error</span><br/>
+	
+	<input type="submit" value="createUser" />
+	</form>
+
+
 	   
